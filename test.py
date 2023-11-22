@@ -3,6 +3,7 @@ import time
 
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 from TwoLayerNet import TwoLayerNet
 from sklearn.preprocessing import StandardScaler
 
@@ -12,15 +13,13 @@ csv_path='heart.csv'
 
 df=pd.read_csv(csv_path)
 
-x=df.drop(['HeartDisease'],axis=1)
+x=df.drop(['HeartDisease', 'RestingBP', 'RestingECG'], axis=1)
 y=df['HeartDisease']
 
-x_encoded = pd.get_dummies(x, columns=['Sex', 'ChestPainType', 'RestingECG', 'ExerciseAngina','ST_Slope'])
+x_encoded = pd.get_dummies(x, columns=['Sex', 'ChestPainType', 'ExerciseAngina','ST_Slope'])
 
 newX=x_encoded.values
 newY=y.values
-
-
 
 
 
@@ -57,16 +56,16 @@ print(t_train)
 print("t_test")
 
 print(x_test)
-numeric_data = x_train[:, :6]  # 숫자형 데이터 추출
-numeric_data_test=x_test[:,:6]
+numeric_data = x_train[:, :5]  # 숫자형 데이터 추출
+numeric_data_test=x_test[:,:5]
 scaler = StandardScaler()
 scaler_test=StandardScaler()
 scaled_numeric_data = scaler.fit_transform(numeric_data)
 scaled_numeric_data_test=scaler.fit_transform(numeric_data_test)
 
 # 불리언 값의 변환
-boolean_data = x_train[:, 6:]  # 불리언 데이터 추출
-boolean_data_test=x_test[:, 6:]
+boolean_data = x_train[:, 5:]  # 불리언 데이터 추출
+boolean_data_test=x_test[:, 5:]
 boolean_data = boolean_data.astype(int)  # True를 1로, False를 0으로 변환
 boolean_data_test=boolean_data_test.astype(int)
 
@@ -80,14 +79,14 @@ print(preprocessed_x_train.dtype)
 #x_train=x_train.astype(float)
 #t_train=t_train.astype(float)
 print("network")
-network = TwoLayerNet(input_size=20, hidden_size=10, output_size=1)
+network = TwoLayerNet(input_size=16, hidden_size=10, output_size=1)
 
 # 하이퍼 파라메터
-iters_num = 10000 # 반복횟수
+iters_num = 20000 # 반복횟수
 train_size = x_train.shape[0]
 print(train_size)
 batch_size = 100 # 미니배치 크기
-learning_rate = 0.1
+learning_rate = 0.01
 train_loss_list = []
 train_acc_list = []
 test_acc_list = []
@@ -107,7 +106,6 @@ for i in range(iters_num):
     batch_mask = np.random.choice(train_size, batch_size)
     x_batch = preprocessed_x_train[batch_mask]
     t_batch = t_train[batch_mask].reshape((100,1))
-
 
 
  # 오차역전파법으로 기울기 계산
@@ -135,7 +133,22 @@ for i in range(iters_num):
       print("train acc, test acc | " + str(train_acc) + ", " + str(test_acc))
 
 
+# Plotting the training loss
+plt.figure(figsize=(12, 4))
+plt.subplot(1, 2, 1)
+plt.plot(train_loss_list)
+plt.title('Training Loss')
+plt.xlabel('Iterations')
+plt.ylabel('Loss')
 
+# Plotting the training and test accuracy
+plt.subplot(1, 2, 2)
+plt.plot(train_acc_list, label='train acc')
+plt.plot(test_acc_list, label='test acc', linestyle='--')
+plt.title('Training and Test Accuracy')
+plt.xlabel('Epochs')
+plt.ylabel('Accuracy')
+plt.legend()
 
-print(train_loss_list)
-
+plt.tight_layout()
+plt.show()

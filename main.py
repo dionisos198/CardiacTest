@@ -5,8 +5,7 @@ import numpy as np
 sys.path.append(os.pardir)
 from dataset.mnist import load_mnist
 from TwoLayerNet import TwoLayerNet
-
-
+import matplotlib.pyplot as plt
 
 # 데이터 읽기
 (x_train, t_train), (x_test, t_test) = load_mnist(normalize=True, one_hot_label=True)
@@ -24,8 +23,6 @@ iter_per_epoch = max(train_size / batch_size, 1)
 print("iter_per_epoch")
 print(iter_per_epoch)
 
-
-
 for i in range(iters_num):
  # print(i)
  # 미니배치 획득
@@ -34,16 +31,14 @@ for i in range(iters_num):
     t_batch = t_train[batch_mask]
 
 
-
-
  # 오차역전파법으로 기울기 계산
     grad = network.gradient(x_batch, t_batch)
 
  # 매개변수 갱신
     for key in ('W1', 'b1', 'W2', 'b2'):
-      print(key)
-      print(grad[key])
-      time.sleep(1)
+      #print(key)
+      #print(grad[key])
+      #time.sleep(1)
       network.params[key] -= learning_rate * grad[key]
  # 학습 경과 기록
     loss = network.loss(x_batch, t_batch)
@@ -55,3 +50,23 @@ for i in range(iters_num):
       train_acc_list.append(train_acc)
       test_acc_list.append(test_acc)
       print("train acc, test acc | " + str(train_acc) + ", " + str(test_acc))
+
+# Plotting the training loss
+plt.figure(figsize=(12, 4))
+plt.subplot(1, 2, 1)
+plt.plot(train_loss_list)
+plt.title('Training Loss')
+plt.xlabel('Iterations')
+plt.ylabel('Loss')
+
+# Plotting the training and test accuracy
+plt.subplot(1, 2, 2)
+plt.plot(train_acc_list, label='train acc')
+plt.plot(test_acc_list, label='test acc', linestyle='--')
+plt.title('Training and Test Accuracy')
+plt.xlabel('Epochs')
+plt.ylabel('Accuracy')
+plt.legend()
+
+plt.tight_layout()
+plt.show()
