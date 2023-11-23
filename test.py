@@ -77,10 +77,12 @@ preprocessed_x_test=np.concatenate((scaled_numeric_data_test,boolean_data_test),
 print("전처리된 x_train 데이터:")
 print(preprocessed_x_train)
 print(preprocessed_x_train.dtype)
+print("test size 갯수:")
+print(len(preprocessed_x_test))
 #x_train=x_train.astype(float)
 #t_train=t_train.astype(float)
 print("network")
-network = TwoLayerNet(input_size=20, hidden_size=10, output_size=1)
+network = TwoLayerNet(input_size=20, hidden_size=19, output_size=1)
 
 # 하이퍼 파라메터
 iters_num = 10000 # 반복횟수
