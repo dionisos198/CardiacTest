@@ -1,6 +1,7 @@
 import numpy as np
 from Affine import Affine
 from Relu import Relu
+from Sigmoid import Sigmoid
 from SoftmaxWLoss import SoftmaxWLoss
 from collections import OrderedDict
 from SigmoidBinaryCrossEntropyLoss import SigmoidBinaryCrossEntropyLoss
@@ -21,7 +22,8 @@ class TwoLayerNet:
         # 계층 생성
         self.layers = OrderedDict()
         self.layers['Affine1'] = Affine(self.params['W1'],self.params['b1'])
-        self.layers['Relu1'] = Relu()
+       # self.layers['Sigmoid'] = Sigmoid()
+        self.layers['Relu'] = Relu()
         self.layers['Affine2'] = Affine(self.params['W2'], self.params['b2'])
 
         #self.lastLayer = SoftmaxWLoss()
