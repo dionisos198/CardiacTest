@@ -79,14 +79,14 @@ print(preprocessed_x_train.dtype)
 #x_train=x_train.astype(float)
 #t_train=t_train.astype(float)
 print("network")
-network = TwoLayerNet(input_size=16, hidden_size=10, output_size=1)
+network = TwoLayerNet(input_size=16, hidden_size1=20, hidden_size2=60, hidden_size3=30, output_size=1)
 
 # 하이퍼 파라메터
-iters_num = 20000 # 반복횟수
+iters_num = 80000 # 반복횟수
 train_size = x_train.shape[0]
 print(train_size)
 batch_size = 100 # 미니배치 크기
-learning_rate = 0.01
+learning_rate = 0.04
 train_loss_list = []
 train_acc_list = []
 test_acc_list = []
@@ -105,14 +105,14 @@ for i in range(iters_num):
  # 미니배치 획득
     batch_mask = np.random.choice(train_size, batch_size)
     x_batch = preprocessed_x_train[batch_mask]
-    t_batch = t_train[batch_mask].reshape((100,1))
+    t_batch = t_train[batch_mask].reshape((batch_size,1))
 
 
  # 오차역전파법으로 기울기 계산
     grad = network.gradient(x_batch, t_batch)
 
  # 매개변수 갱신
-    for key in ('W1', 'b1', 'W2', 'b2'):
+    for key in ('W1', 'b1', 'W2', 'b2', 'W3', 'b3'):
       '''
       print(key)
       print(grad[key])
@@ -131,6 +131,7 @@ for i in range(iters_num):
       train_acc_list.append(train_acc)
       test_acc_list.append(test_acc)
       print("train acc, test acc | " + str(train_acc) + ", " + str(test_acc))
+      print("loss :", loss)
 
 
 # Plotting the training loss
