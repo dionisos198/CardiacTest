@@ -141,4 +141,3 @@ class TwoLayerNet:
 
     def binary_classification_predictions(self,predictions, threshold=0.5):
         return (predictions > threshold).astype(int)
-
