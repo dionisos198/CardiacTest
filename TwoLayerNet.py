@@ -2,7 +2,6 @@ import numpy as np
 from Affine import Affine
 from Relu import Relu
 from Sigmoid import Sigmoid
-from SoftmaxWLoss import SoftmaxWLoss
 from collections import OrderedDict
 from SigmoidBinaryCrossEntropyLoss import SigmoidBinaryCrossEntropyLoss
 import sys
